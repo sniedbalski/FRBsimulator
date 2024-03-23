@@ -4,8 +4,8 @@ import pint
 import pint_xarray
 from scipy import special
 
-from backClasses import *
 from funcs import *
+from backClasses import *
 
 class MetaFRB(Units):
     """
@@ -79,7 +79,7 @@ class InsertFRB(MetaFRB, DynamicFrame):
                          mu_f=self.MU_FREQ,
                          sig_f=self.SIG_FREQ)
         
-        burst_amp = np.sqrt((2*self.NCHAN)/np.pi) * (self.CHAN_BW * self.SNR) * (self.sig_noise/self.SIG_FREQ) * erf_d**-1 # amplitude of the gaussian FRB needed to produce the appropriate SNR value
+        burst_amp = np.sqrt((2*self.NCHAN)/np.pi) * (self.CHAN_BW * self.SNR) * (self.STDV_NOISE/self.SIG_FREQ) * erf_d**-1 # amplitude of the gaussian FRB needed to produce the appropriate SNR value
         
         shift_t = (self.DM/self.K)/(self.FREQ_UPPER)**2 # the time delay in the burst at the highest frequency channel relative to 'infinite' frequency
 
@@ -114,8 +114,8 @@ class SimulateSadTrombone(DynamicSpectrum):
     It would be nice to have a better way to determine the pdf's used to generate variations in bursts within a 'sad trombone' cluster.
     """
     down_drift_prob = 0.95
-    def __init__(self, params:dict, spectrum_input:False):
-        DynamicSpectrum.__init__(self, params=params, spectrum_input=spectrum_input)
+    def __init__(self, params:dict, dynamic_input=0):
+        DynamicSpectrum.__init__(self, params=params, dynamic_input=dynamic_input)
 
         DM_0 = 500 * self.DM_UNIT
         SNR_MAX = 20
